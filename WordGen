@@ -1,0 +1,8 @@
+public class WordGen {
+
+	public static void main(String[] args){
+		FrequencyMap fm = new FrequencyMap();
+		fm.readFile();
+		
+	}
+}
