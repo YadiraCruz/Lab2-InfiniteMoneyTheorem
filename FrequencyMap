@@ -1,23 +1,31 @@
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+/*
+ * Lydia Pitts & Yadira Cruz
+ * 
+ */
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Random; 
 import java.io.*;
 import java.io.File;
 
-
 public class FrequencyMap {
 	
-	//constructor
+	
+	String FILE_AS_STRING = "";
+	
 	public FrequencyMap(){
 		
 	}
-
+	
+	
 	public void readFile() {
 		Scanner userFile = new Scanner(System.in);
 		System.out.println("Enter file to read: ");
 		
 		String fileName = userFile.nextLine();
-		
 		
 		File file = new File(fileName);
 		Scanner fileReader;
@@ -26,14 +34,18 @@ public class FrequencyMap {
 			fileReader = new Scanner(file);
 			while (fileReader.hasNextLine()) {
 				String line = fileReader.nextLine();
-				System.out.println(line.toLowerCase());
-			}
-			fileReader.close();
+				FILE_AS_STRING += line;
+			}	
 		} catch(FileNotFoundException e) {
 			e.printStackTrace();
-			
 		}
 		
+	}//End of readFile
+	
+	public String toString() {
+		System.out.println(FILE_AS_STRING);
+		return FILE_AS_STRING;
 	}
-}
-		
+
+	
+}//End of Class
