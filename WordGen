@@ -1,8 +1,53 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class WordGen {
 
-	public static void main(String[] args){
-		FrequencyMap fm = new FrequencyMap();
-		fm.readFile();
+	
+	public static void main(String[] args) {
 		
+	}//end of main
+	
+	
+	String FILE_AS_STRING = "";
+	
+	public void readFile() {
+		Scanner userFile = new Scanner(System.in);
+		System.out.println("Enter file to read: ");
+		
+		String fileName = userFile.nextLine();
+		
+		File file = new File(fileName);
+		Scanner fileReader;
+		
+		try {
+			fileReader = new Scanner(file);
+			while (fileReader.hasNextLine()) {
+				String line = fileReader.nextLine();
+				FILE_AS_STRING += line + System.lineSeparator();
+			}	
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}//End of readFile
+	
+
+	public String toString() {
+		return FILE_AS_STRING;
 	}
-}
+
+	
+	public String getValueOfK() {
+		Scanner userInput = new Scanner(System.in);
+		System.out.println("Enter desired value of K: ");
+		String kValue = userInput.nextLine();
+		return kValue;
+	}
+	
+	
+	
+
+}//End of class
+ 
