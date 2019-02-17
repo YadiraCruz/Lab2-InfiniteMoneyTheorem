@@ -1,3 +1,68 @@
-public class SequenceTable {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
-}
+public class SequenceTable {
+	
+	String STRING_FILE = "This is the sENTence";
+	int K_VALUE = 2;
+	ArrayList<String> SEQUENCES = new ArrayList<String>();
+	
+	
+	public SequenceTable(String fileName,int valueOfK) {
+		STRING_FILE = fileName;
+		K_VALUE = valueOfK;
+	}
+ 
+	public void getNewSequence() {
+		int lengthOfFile = STRING_FILE.length();
+		int i = 0;
+		while (i < (lengthOfFile - K_VALUE)) {
+			String sequence = "";
+			int j = 0;
+			while (j < K_VALUE) {
+				char charLetter = STRING_FILE.charAt(i+j);
+				sequence += charLetter;
+				j++;
+			}
+			SEQUENCES.add(sequence);
+			i++;
+		}
+	}//End of getNewSequence
+	
+	
+	Map<String, FrequencyMap> table = new HashMap<String, FrequencyMap>();
+	
+	
+	public void addToSeqTable(String sequence) {
+		if (table.containsKey(sequence)) {
+			FrequencyMap freqMap = table.get(sequence);
+			freqMap.getNewChar();
+			freqMap.addToMap();
+			table.put(sequence, freqMap);
+		} else {
+			FrequencyMap fm = new FrequencyMap(STRING_FILE, sequence);
+			fm.getNewChar();
+			fm.addToMap();
+			table.put(sequence, fm);
+		}
+	}//End of addToSeqTable
+	
+	
+	public void iterateSeqArray() {
+		for (int i=0; i<SEQUENCES.size(); i++) {
+			String sequence = SEQUENCES.get(i);
+			addToSeqTable(sequence);
+		}
+	}
+	
+	
+	public static void main(String[] args) {
+		SequenceTable st = new SequenceTable("This is a sentence", 2);
+		st.getNewSequence();
+		st.iterateSeqArray();
+	}
+
+
+}//End of class
