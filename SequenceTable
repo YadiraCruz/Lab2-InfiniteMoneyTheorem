@@ -1,3 +1,57 @@
-public class SequenceTable {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
-}
+public class SequenceTable {
+	
+	String STRING_FILE = "This is a sentence";
+	int K_VALUE = 0;
+	String SEQUENCE = "";
+	String[] SEQUENCES = {};
+	
+	public SequenceTable(String fileName,int valueOfK) {
+		STRING_FILE = fileName;
+		K_VALUE = valueOfK;
+	}
+ 
+	
+	Map<String, FrequencyMap> table = new HashMap<String, FrequencyMap>();
+	
+	
+	public void addToSeqTable() {
+		if (table.containsKey(SEQUENCE)) {
+			FrequencyMap freqMap = table.get(SEQUENCE);
+			freqMap.getNewChar();
+			freqMap.addToMap();
+			table.put(SEQUENCE, freqMap);
+		} else {
+			FrequencyMap fm = new FrequencyMap(STRING_FILE, SEQUENCE);
+			fm.getNewChar();
+			fm.addToMap();
+			table.put(SEQUENCE, fm);
+		}
+	}//End of addToSeqTable
+	
+	
+	public void getNewSequence() {
+		int lengthOfFile = STRING_FILE.length();
+		int i = 0;
+		SEQUENCES.
+		while (i < (lengthOfFile - K_VALUE)) {
+			String sequence = "";
+			int j = 0;
+			while (j < K_VALUE) {
+				char charLetter = STRING_FILE.charAt(i+j);
+				j++;
+			}
+			i++;
+		}
+	}//End of getNewSequence
+	
+	
+	public static void main(String[] args) {
+		
+	}
+
+
+}//End of class
