@@ -1,8 +1,184 @@
-public class WordGen {
+//Imports the necessary objects
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
-	public static void main(String[] args){
-		FrequencyMap fm = new FrequencyMap();
-		fm.readFile();
+/**	Lab 2 - Infinite Monkey Theorem
+ * 
+ * 	Authors: Lydia Pitts and Yadira Cruz
+ * 	Created: 2/19/19
+ *
+ *  This code establishes the WordGen Class, which prints a string made up of characters from probabilities.
+ *  	1) Asks the user to input the text file they would like to use.
+ *  	2) Asks the user for an integer K-value.
+ *  	3) Uses SequenceTable and FrequencyMap.
+ *  	4) Reads the text and creates probabilities of letters following k-length strings
+ *  	5) Creates a 500 character output using the probabilities.
+ */
+public class WordGen {
+	
+	String FILE_AS_STRING = "";	  //stores the file as a string
+	int K_VALUE = 0;			  //stores the k value
+	ArrayList<String> SEQUENCES;  //stores an array of all k-length sequences from the file
+	
+	
+	
+	/**
+	 * The Constructor Method.
+	 */
+	public WordGen() { }
+	
+	
+	
+	/**
+	 * Asks user to input the name of a text file.
+	 * Reads the text file.
+	 * Puts the text into FILE_AS_STRING.
+	 */
+	public void readFile() {
+		Scanner userFile = new Scanner(System.in);
+		System.out.println("Enter file to read: ");
+
+		String fileName = userFile.nextLine();
 		
+		File file = new File(fileName);
+		Scanner fileReader;
+		
+		try {
+			fileReader = new Scanner(file);
+			while (fileReader.hasNextLine()) {
+				String line = fileReader.nextLine();
+				FILE_AS_STRING += line + System.lineSeparator();
+			}	
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}//End of readFile
+	
+	
+	
+	/**
+	 * Returns a textual representation of the input file.
+	 */
+	public String toString() {
+		return FILE_AS_STRING;
 	}
-}
+
+	
+	
+	/**
+	 * Reads FILE_AS_STRING and creates an array of all of the k-length sequences in a file.
+	 * Changes SEQUENCES.
+	 * @return an array of all of the k-length sequences from FILE_AS_STRING.
+	 */
+	public ArrayList<String> getNewSequence() {
+		ArrayList<String> sequenceArray = new ArrayList<String>();
+		int lengthOfFile = FILE_AS_STRING.length();
+		int i = 0;
+		while (i < (lengthOfFile - K_VALUE)) {
+			String sequence = "";
+			int j = 0;
+			while (j < K_VALUE) {
+				char charLetter = FILE_AS_STRING.charAt(i+j);
+				sequence += charLetter;
+				j++;
+			}
+			sequenceArray.add(sequence);
+			i++;
+		}
+		SEQUENCES = sequenceArray;
+		return SEQUENCES;
+	}//End of getNewSequence
+	
+	
+	
+	/**
+	 * Asks the user to input an integer for the length of K they would like.
+	 * Changes K_VALUE to the input.
+	 * @return the integer K value that the user input.
+	 */
+	public int getValueOfK() {
+		Scanner userInput = new Scanner(System.in);
+		System.out.println("Enter desired value of K: ");
+		String kValue = userInput.nextLine();
+		int intValueK = Integer.parseInt(kValue);
+		K_VALUE = intValueK;
+		return intValueK;
+	}
+	
+	
+	
+	/**
+	 * Uses random to pick a random letter in the alphabet (letters).
+	 * @return a random letter in the alphabet (a-z).
+	 */
+	public static char randomChar() {
+		String letters = "abcdefghijklmnopqrstuvwxyz";
+		int index = (int) (Math.random() * 26);
+		return letters.charAt(index);
+	}
+	
+	
+	
+	/**
+	 * Creates the first k-length string that is used to create the output.
+	 * Uses randomChar() in order to generate random letters.
+	 * @return k-length string.
+	 */
+	public String getStringK() {
+		int i = 0;
+		String stringK = "";
+		while(i < K_VALUE) {
+			stringK += this.randomChar();
+			i++;
+		}
+		return stringK;
+	}
+	
+	
+	
+	/**
+	 * Creates the output string.
+	 * Uses the probabilities to generate the string.
+	 * Prints out the final output.
+	 */
+	public void createFinalString() {
+		this.getNewSequence();
+		SequenceTable st = new SequenceTable();
+		//st.getNewSequence();
+		st.iterateSeqArray(SEQUENCES, FILE_AS_STRING);
+		String outPut = this.getStringK();
+		int i = 0;
+		int substringIndex = K_VALUE;
+		while (i < 500) {
+			String sequence = outPut.substring(i , (substringIndex));
+			if(SEQUENCES.contains(sequence)){
+				outPut += st.getCharacter(sequence);
+			} else {
+				outPut += this.randomChar();
+			}
+			i++;
+			substringIndex++;
+		}//end while loop
+		System.out.println(outPut);
+	}//End of createFinalString
+
+	
+	
+	/**
+	 * Main method
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		WordGen wg = new WordGen();
+		wg.readFile();
+		wg.getValueOfK();
+		wg.createFinalString();
+	}//end of main
+	
+	
+	
+}//End of class
+ 
+ 
