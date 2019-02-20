@@ -1,3 +1,80 @@
-public class SequenceTable {
+//Imports the necessary objects
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-}
+/**	Lab 2 - Infinite Monkey Theorem
+ * 
+ * 	Authors: Lydia Pitts and Yadira Cruz
+ * 	Created: 2/19/19
+ * 
+ *  This code establishes the SequenceTable Class, which creates a map of k-length strings and FrequencyMaps.
+ *  	1) Creates a map with <String, FrequencyMap>
+ *  	2) Adds each sequence from WordGen into the SequenceTable.
+ */
+public class SequenceTable {
+	
+	/**
+	 * The Constructor Method.
+	 */
+	public SequenceTable() { }
+ 
+	
+	
+	/**
+	 * Creates a map containing k-length string sequences, and the associated FrequencyMap.
+	 */
+	Map<String, FrequencyMap> table = new HashMap<String, FrequencyMap>();
+	
+	
+	
+	/**
+	 * If the sequence is not in the table, then it adds it to the table and creates a new FrequencyMap.
+	 * If the sequence is in the table, then it adds 1 to the correct character in the associated FreqencyMap.
+	 * @param sequence = k-length string from file.
+	 * @param fileAsString = the string representation of the file read.
+	 */
+	public void addToSeqTable(String sequence, String fileAsString) {
+		if (table.containsKey(sequence)) {
+			FrequencyMap freqMap = table.get(sequence);
+			freqMap.getNewChar();
+			freqMap.addToMap();
+			table.put(sequence, freqMap);
+		} else {
+			FrequencyMap fm = new FrequencyMap(fileAsString, sequence);
+			fm.getNewChar();
+			fm.addToMap();
+			table.put(sequence, fm);
+		}
+	}//End of addToSeqTable
+	
+	
+	
+	/**
+	 * Goes through each k-length sequence in SEQUENCES (of WordGen).
+	 * Uses each addToSeqTable() to edit SequenceTable.
+	 * @param sequence = k-length string from file.
+	 * @param fileAsString = the string representation of the file read.
+	 */
+	public void iterateSeqArray(ArrayList<String> sequenceArray, String fileAsString) {
+		for (int i=0; i<sequenceArray.size(); i++) {
+			String sequence = sequenceArray.get(i);
+			this.addToSeqTable(sequence, fileAsString);
+		}
+	}
+	
+	
+	
+	/**
+	 * Gets a character based on probability to add onto the output in WordGen.
+	 * @param sequence = k-length string from file.
+	 * @return the character to add onto the output in WordGen.
+	 */
+	public char getCharacter(String sequence) {
+		FrequencyMap freqMap = table.get(sequence);
+		return freqMap.charToAdd();
+	}
+	
+	
+
+}//End of class
